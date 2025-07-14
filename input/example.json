@@ -1,0 +1,35 @@
+[
+    {
+      "id": "S001",
+      "name": "Arun Kumar",
+      "age": 16,
+      "class": "12th",
+      "gender": "Male",
+      "subjects": ["Math", "Physics", "Chemistry", "English"],
+      "marks": 76,
+      "email": "arun.kumar@example.com",
+      "phone": "9876543210"
+    },
+    {
+      "id": "S002",
+      "name": "Priya Sharma",
+      "age": 17,
+      "class": "12th",
+      "gender": "Female",
+      "subjects": ["Math", "Biology", "Chemistry", "English"],
+      "marks": 87,
+      "email": "priya.sharma@example.com",
+      "phone": "9876501234"
+    },
+    {
+      "id": "S003",
+      "name": "Rahul Verma",
+      "age": 16,
+      "class": "11th",
+      "gender": "Male",
+      "subjects": ["History", "Economics", "Political Science", "English"],
+      "marks": 92,
+      "email": "rahul.verma@example.com",
+      "phone": "9876512345"
+    }
+]
