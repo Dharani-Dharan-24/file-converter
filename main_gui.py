@@ -1,8 +1,11 @@
+import json
+from json import JSONDecodeError
+from tkinterdnd2 import DND_FILES, TkinterDnD
 import pandas as pd
 import tkinter as tk
-from tkinter import filedialog, messagebox
+from tkinter import filedialog, messagebox, OptionMenu, ttk
+import customtkinter as ctk
 
-from pygments.lexer import default
 
 
 # from PIL import Image
@@ -11,15 +14,18 @@ def convert_json(input_file, output_file, output_format):
     try:
         df = pd.read_json(input_file)
     except:
-        df = pd.read_json(input_file, lines = True)
+        try:
+            df = pd.read_json(input_file, lines = True)
+        except (ValueError, JSONDecodeError) as e:
+            raise ValueError(f"Failed to read JSON file {e}")
 
-    if output_format == 'csv':
+    if output_format == 'csv 🧾':
         df.to_csv(output_file, index = False)
 
-    elif output_format == 'excel':
+    elif output_format == 'excel 📊':
         df.to_excel(output_file, index = False, engine = 'openpyxl')
 
-    elif output_format == 'text':
+    elif output_format == 'text 📄':
         df.to_string(output_file, index = False)
 
     else:
@@ -31,10 +37,11 @@ def browse_input():
     input_entry.delete(0, tk.END)
     input_entry.insert(0, file_path)
 
+
 def save_as():
 
     ext = format_var.get()
-    default_ext = {'csv' : '.csv', 'excel' : '.xls', 'text' : '.txt'}[ext]
+    default_ext = {'csv 🧾' : '.csv', 'excel 📊' : '.xls', 'text 📄' : '.txt'}[ext]
     file_path = filedialog.asksaveasfilename(defaultextension=default_ext)
     output_entry.delete(0, tk.END)
     output_entry.insert(0, file_path)
@@ -47,28 +54,83 @@ def run_conversion():
 
     if not input_file or not output_file:
         messagebox.showwarning("Warning", "Please select a input or output file")
+        return
+    try:
+        convert_json(input_file, output_file, output_format)
+        show_success()
+    except Exception as e:
+        messagebox.showerror("Error", f"Conversion Failed:\n {e}")
 
-    convert_json(input_file, output_file, output_format)
+def show_success():
 
-root = tk.Tk()
+    success = tk.Label(root, text = " ✅ File Converted Successfully ! ", font=('Arial', 16, 'bold'), fg = 'green', bg = '#EBEBEB')
+    success.place(relx = 0.5, rely=0.5, anchor='center')
+
+    def fade():
+        alpha = success.winfo_fpixels('1i')
+        current_col = success.cget('fg')
+
+        success.after(2000, success.destroy)
+
+    fade()
+
+
+ctk.set_default_color_theme("blue")
+
+root = ctk.CTk()
 root.title("JSON FILE CONVERTER")
 root.geometry("500x500")
+root.configure(bg='white')
 
-tk.Label(root, text = 'Select Json file: ').pack(pady = 10)
-input_entry = tk.Entry(root, width = 40)
-input_entry.pack(padx = 5)
-tk.Button(root, text = 'Browse', command=browse_input).pack(pady = 5)
+style = ttk.Style()
+style.theme_use("clam")
+style.configure("Rounded.TEntry",
+                padding=10,
+                relief="flat",
+                borderwidth=0,
+                fieldbackground="white")
 
-tk.Label(root, text= 'Select Output Format: ').pack(pady = 10)
-format_var = tk.StringVar(value='csv')
-tk.OptionMenu(root, format_var, 'csv', 'excel', 'text').pack()
+tk.Label(root, text = 'Select Json file: ',font = ('Times New Roman', 15, 'bold'), fg = '#36454F', bg = '#EBEBEB').place(x = 20, y = 10)
+input_entry = ctk.CTkEntry(root, width=200, height=40, corner_radius=15, placeholder_text="Type File Path or Upload File")
+input_entry.pack(pady=(55, 10))
+button = ctk.CTkButton(root,
+                       command=browse_input,
+                       text="Upload File 📤",
+                       width=140,
+                       height=50,
+                       corner_radius=25,
+                       fg_color="#00BFFF",
+                       hover_color="darkblue",
+                       text_color="white",
+                       font=("Arial", 16, "bold"))
+button.pack()
 
-tk.Label(root, text = 'Save as').pack(pady = 10)
-output_entry = tk.Entry(root, width = 40)
-output_entry.pack(pady = 5)
-tk.Button(root, text = 'Choose Location', command=save_as).pack(pady = 5)
+tk.Label(root, text= 'Select Output Format: ', font = ('Times New Roman', 15, 'bold'), fg = '#36454F', bg = '#EBEBEB').place(x=20, y = 170)
+format_var = tk.StringVar(value='csv 🧾')
+om = ttk.OptionMenu(root, format_var, 'csv 🧾', 'csv 🧾', 'excel 📊', 'text 📄')
 
-tk.Button(root, text='Convert', command=run_conversion, bg='green', fg='white').pack(pady = 15)
+style = ttk.Style(root)
+style.theme_use('default')
+style.configure("Custom.TMenubutton", font=("Arial", 11, "bold italic"), foreground = '#003366', background = '#EBEBEB', padding=5)
+om.config(style="Custom.TMenubutton")
+om.pack(pady = (75, 20))
+
+tk.Label(root, text = 'Save as: ', font = ('Times New Roman', 15, 'bold'), fg = '#36454F', bg = '#EBEBEB').pack(pady = (10, 0))
+output_entry = ctk.CTkEntry(root, width=200, height=40, corner_radius=15, placeholder_text="Type or Choose Location")
+output_entry.pack(pady = (10, 10))
+tk.Button(root, text = 'Choose Location  👆', fg = 'brown',command=save_as).pack(pady = 1)
+
+bt = ctk.CTkButton(root,
+                       text="CONVERT 🔄",
+                       command=run_conversion,
+                       width=140,
+                       height=50,
+                       corner_radius=25,
+                       fg_color="green",
+                       hover_color="darkgreen",
+                       text_color="white",
+                       font=("Arial", 16, "bold"))
+bt.pack(pady = 15)
 
 root.mainloop()
 
