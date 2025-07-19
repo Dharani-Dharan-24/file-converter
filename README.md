@@ -6,8 +6,6 @@
 
 A user-friendly GUI application to convert JSON files to CSV, Excel, or Text formats - built with Python and Tkinter.
 
-![Application Screenshot](screenshot.png) *(Replace with your actual screenshot)*
-
 ## Features ✨
 
 - Convert JSON → CSV/Excel/Text with one click
