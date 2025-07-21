@@ -1,0 +1,4 @@
+  id         name  age class gender                                         subjects  marks                    email      phone
+S001   Arun Kumar   16  12th   Male              [Math, Physics, Chemistry, English]     76   arun.kumar@example.com 9876543210
+S002 Priya Sharma   17  12th Female              [Math, Biology, Chemistry, English]     87 priya.sharma@example.com 9876501234
+S003  Rahul Verma   16  11th   Male [History, Economics, Political Science, English]     92  rahul.verma@example.com 9876512345
